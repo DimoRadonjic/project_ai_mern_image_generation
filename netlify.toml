@@ -7,8 +7,15 @@
   functions = "functions"
 
 [build.environment]
-API_KEY = '711bdaf1ae69fbed2fd30d98c2310495459a90b83a82d167a73ad1317a775299fa0d0abcd6117613d6ac0812332c9ad3'
-CLOUDINARY_CLOUD_NAME = "dogpc7la2"
-CLOUDINARY_API_KEY = "679597927822262"
-CLOUDINARY_API_SECRET = "QWKoZ25SI2-XRqKJJEjYJmqgUug"
-MONGODB_URL = "mongodb+srv://dimoradonjic2112:HI1scELVV0nYebQA@cluster0.5b7tkfm.mongodb.net/?retryWrites=true&w=majority"
+  API_KEY = '711bdaf1ae69fbed2fd30d98c2310495459a90b83a82d167a73ad1317a775299fa0d0abcd6117613d6ac0812332c9ad3'
+  CLOUDINARY_CLOUD_NAME = "dogpc7la2"
+  CLOUDINARY_API_KEY = "679597927822262"
+  CLOUDINARY_API_SECRET = "QWKoZ25SI2-XRqKJJEjYJmqgUug"
+  MONGODB_URL = "mongodb+srv://dimoradonjic2112:HI1scELVV0nYebQA@cluster0.5b7tkfm.mongodb.net/?retryWrites=true&w=majority"
+
+[env]
+  API_KEY = '711bdaf1ae69fbed2fd30d98c2310495459a90b83a82d167a73ad1317a775299fa0d0abcd6117613d6ac0812332c9ad3'
+  CLOUDINARY_CLOUD_NAME = "dogpc7la2"
+  CLOUDINARY_API_KEY = "679597927822262"
+  CLOUDINARY_API_SECRET = "QWKoZ25SI2-XRqKJJEjYJmqgUug"
+  MONGODB_URL = "mongodb+srv://dimoradonjic2112:HI1scELVV0nYebQA@cluster0.5b7tkfm.mongodb.net/?retryWrites=true&w=majority"
