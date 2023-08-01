@@ -1,6 +1,11 @@
-import { ChangeEventHandler, useEffect, useState } from 'react';
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { useState, useEffect } from 'react';
 
 import { Card, FormField, Loader } from '../components';
+import axios from 'axios';
 
 type Post = {
   _id: number;
@@ -29,40 +34,35 @@ const Home = () => {
   const [allPosts, setAllPosts] = useState<Array<Post> | null>();
 
   const [searchText, setSearchText] = useState<string>('');
-  const [searchTimeout, setSearchTimeout] = useState<number | undefined>(
-    undefined
-  );
-
+  const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout>();
+  0;
   const [searchedResults, setSearchedResults] = useState<Array<Post> | null>();
 
-  // const fetchPosts = async () => {
-  //   setLoading(true);
+  const fetchPosts = async () => {
+    setLoading(true);
 
-  //   try {
-  //     const response = await fetch(
-  //       'https://dalle-arbb.onrender.com/api/v1/post',
-  //       {
-  //         method: 'GET',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //         },
-  //       }
-  //     );
+    try {
+      const response = await axios.get('/.netlify/functions/getPosts', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-  //     if (response.ok) {
-  //       const result = await response.json();
-  //       setAllPosts(result.data.reverse());
-  //     }
-  //   } catch (err) {
-  //     alert(err);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+      if (response.status === 200) {
+        console.log(response.data.arrayPosts);
+        setAllPosts(response.data.arrayPosts.reverse());
+      }
+    } catch (err) {
+      console.log(err);
+      alert(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  // useEffect(() => {
-  //   fetchPosts();
-  // }, []);
+  useEffect(() => {
+    void fetchPosts();
+  }, []);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     clearTimeout(searchTimeout);

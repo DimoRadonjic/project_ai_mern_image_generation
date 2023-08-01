@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { preview } from '../assets';
@@ -33,7 +34,7 @@ const CreatePost = () => {
           '/.netlify/functions/generate-image',
 
           {
-            prompt: prompt,
+            prompt: form.prompt,
           },
           {
             headers: {
@@ -72,23 +73,18 @@ const CreatePost = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    console.log(form);
+
     if (form.prompt && form.photo) {
       setLoading(true);
       try {
-        const response = await fetch(
-          'https://dalle-arbb.onrender.com/api/v1/post',
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ ...form }),
-          }
-        );
-
-        await response.json();
-        alert('Success');
-        navigate('/');
+        const response = await axios.post('/.netlify/functions/createPost', {
+          ...form,
+        });
+        if (response.status === 200) {
+          alert('Success');
+          navigate('/');
+        }
       } catch (err) {
         alert(err);
       } finally {
@@ -108,7 +104,7 @@ const CreatePost = () => {
         </p>
       </div>
 
-      <form className='mt-16 max-w-3xl'>
+      <form className='mt-16 max-w-3xl' onSubmit={handleSubmit}>
         <div className='flex flex-col gap-5'>
           <FormField
             labelName='Your Name'

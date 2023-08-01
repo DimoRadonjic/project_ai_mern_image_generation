@@ -20,6 +20,13 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": [
+    "src",
+    "functions",
+    "functions/generate-images.ts",
+    "mongodb",
+    "mongodb/models/post.ts",
+    "mongodb/connect.ts"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
