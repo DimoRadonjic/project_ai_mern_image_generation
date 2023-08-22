@@ -2,7 +2,8 @@
 
 Welcome to the AI Images Showcase Gallery! Immerse yourself in a collection of AI-generated images, each unique and inspired by user prompts. This website utilizes MongoDB to store and present these captivating creations.
 
-![AI Images Showcase Gallery](screenshot.png)
+<img width="1104" alt="image-gallery-site" src="https://github.com/DimoRadonjic/project_ai_mern_image_generation/assets/87665926/b6fe53f0-b9a3-4e11-a514-f2dffcb3a54d">
+
 
 ## Table of Contents
 
