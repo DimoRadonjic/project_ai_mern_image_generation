@@ -19,14 +19,18 @@ export const handler: Handler = async () => {
       throw new Error('MONGODB_URL environment variable not set.');
     }
     const client = new MongoClient(uri);
-    await client.connect();
 
-    const collection = client.db('ImageGeneratorPosts').collection('Posts');
+    let posts;
+    try {
+      await client.connect();
 
-    // Fetch all posts from MongoDB
-    const posts = await collection.find().toArray();
+      const collection = client.db('ImageGeneratorPosts').collection('Posts');
 
-    await client.close();
+      // Fetch all posts from MongoDB
+      posts = await collection.find().toArray();
+    } finally {
+      await client.close();
+    }
 
     const responseData: ResponseData = {
       success: true,

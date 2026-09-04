@@ -2,22 +2,8 @@ import { Link, Route, Routes, BrowserRouter } from 'react-router-dom';
 
 import { logo } from './assets';
 import { Home, CreatePost } from './pages';
-import { useEffect } from 'react';
-import axios from 'axios';
 
 const App = () => {
-  useEffect(() => {
-    console.log('Attempting to connect to MongoDB function...');
-    const connectToMongoDB = async () => {
-      try {
-        const response = await axios.get('/.netlify/functions/connectToDB');
-        console.log('Response from MongoDB function:', response.data);
-      } catch (err) {
-        alert(err);
-      }
-    };
-    void connectToMongoDB();
-  }, []);
   return (
     <>
       <BrowserRouter>

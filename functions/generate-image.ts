@@ -2,13 +2,29 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import axios, { AxiosRequestConfig } from 'axios';
-import type { Handler, HandlerEvent, HandlerContext } from '@netlify/functions';
+import type { Handler, HandlerEvent } from '@netlify/functions';
 
-const handler: Handler = async (
-  event: HandlerEvent,
-  context: HandlerContext
-) => {
-  const prompt = event?.body;
+interface RequestBody {
+  prompt: string;
+}
+
+const handler: Handler = async (event: HandlerEvent) => {
+  if (!event.body) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ error: 'Please provide a prompt' }),
+    };
+  }
+
+  let prompt: string;
+  try {
+    ({ prompt } = JSON.parse(event.body) as RequestBody);
+  } catch {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ error: 'Invalid JSON body' }),
+    };
+  }
 
   if (!prompt) {
     return {
@@ -59,7 +75,3 @@ const handler: Handler = async (
 };
 
 export { handler };
-
-// exports.handler.path = '/generate-image';
-
-// export { handler };

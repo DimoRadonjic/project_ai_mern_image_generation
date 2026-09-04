@@ -1,10 +1,8 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-
 import { download } from '../assets';
 import { downloadImage } from '../utils';
 
 interface CardProps {
-  _id: any;
+  _id: string;
   name: string;
   prompt: string;
   photo: string;
@@ -23,7 +21,7 @@ const Card = ({ _id, name, prompt, photo }: CardProps) => (
       <div className='mt-5 flex justify-between items-center gap-2'>
         <div className='flex items-center gap-2'>
           <div className='w-7 h-7 rounded-full object-cover bg-green-700 flex justify-center items-center text-white text-xs font-bold'>
-            {name[0]}
+            {name ? name[0].toUpperCase() : '?'}
           </div>
           <p className='text-white text-sm'>{name}</p>
         </div>
