@@ -1,14 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useState, useEffect } from 'react';
 
 import { Card, FormField, Loader } from '../components';
 import axios from 'axios';
 
 type Post = {
-  _id: number;
+  _id: string;
   name: string;
   prompt: string;
   photo: string;
@@ -29,32 +25,39 @@ const RenderCards = ({ data, title }: RenderCardsProps) => {
   );
 };
 
+interface GetPostsResponse {
+  success: boolean;
+  arrayPosts?: Post[];
+  message?: string;
+}
+
 const Home = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [allPosts, setAllPosts] = useState<Array<Post> | null>();
 
   const [searchText, setSearchText] = useState<string>('');
   const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout>();
-  0;
   const [searchedResults, setSearchedResults] = useState<Array<Post> | null>();
 
   const fetchPosts = async () => {
     setLoading(true);
 
     try {
-      const response = await axios.get('/.netlify/functions/getPosts', {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await axios.get<GetPostsResponse>(
+        '/.netlify/functions/getPosts',
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
 
-      if (response.status === 200) {
-        console.log(response.data.arrayPosts);
-        setAllPosts(response.data.arrayPosts.reverse());
+      if (response.status === 200 && response.data.arrayPosts) {
+        setAllPosts([...response.data.arrayPosts].reverse());
       }
     } catch (err) {
-      console.log(err);
-      alert(err);
+      console.error(err);
+      alert('Unable to fetch posts, please try again.');
     } finally {
       setLoading(false);
     }
@@ -65,8 +68,9 @@ const Home = () => {
   }, []);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
     clearTimeout(searchTimeout);
-    setSearchText(e.target.value);
+    setSearchText(value);
 
     setSearchTimeout(
       setTimeout(() => {
@@ -74,8 +78,8 @@ const Home = () => {
           allPosts &&
           allPosts.filter(
             (item) =>
-              item.name.toLowerCase().includes(searchText.toLowerCase()) ||
-              item.prompt.toLowerCase().includes(searchText.toLowerCase())
+              item.name.toLowerCase().includes(value.toLowerCase()) ||
+              item.prompt.toLowerCase().includes(value.toLowerCase())
           );
         setSearchedResults(searchResult && searchResult);
       }, 500)
@@ -114,7 +118,7 @@ const Home = () => {
           <>
             {searchText && (
               <h2 className='font-medium text-[#666e75] text-xl mb-3'>
-                Showing Resuls for{' '}
+                Showing Results for{' '}
                 <span className='text-[#222328]'>{searchText}</span>:
               </h2>
             )}

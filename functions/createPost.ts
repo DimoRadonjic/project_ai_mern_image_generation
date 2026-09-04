@@ -36,7 +36,7 @@ export const handler: Handler = async (event) => {
       };
     }
 
-    const { name, prompt, photo } = JSON.parse(requestBody);
+    const { name, prompt, photo } = JSON.parse(requestBody) as RequestBody;
 
     // Upload the image to Cloudinary
     const uploadResult = await cloudinary.uploader.upload(photo, {
@@ -51,18 +51,22 @@ export const handler: Handler = async (event) => {
       throw new Error('MONGODB_URL environment variable not set.');
     }
     const client = new MongoClient(uri);
-    await client.connect();
 
-    const collection = client.db('ImageGeneratorPosts').collection('Posts');
+    let newPost;
+    try {
+      await client.connect();
 
-    // Save data to MongoDB
-    const newPost = await collection.insertOne({
-      name,
-      prompt,
-      photo: photoUrl,
-    });
+      const collection = client.db('ImageGeneratorPosts').collection('Posts');
 
-    await client.close();
+      // Save data to MongoDB
+      newPost = await collection.insertOne({
+        name,
+        prompt,
+        photo: photoUrl,
+      });
+    } finally {
+      await client.close();
+    }
 
     const responseData: ResponseData = {
       success: true,

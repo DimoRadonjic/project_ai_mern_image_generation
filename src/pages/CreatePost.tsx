@@ -59,21 +59,11 @@ const CreatePost = () => {
   };
 
   const handleGenerateImage = () => {
-    setGeneratingImg(true);
-    generateImage()
-      .then(() => {
-        setGeneratingImg(false);
-      })
-      .catch((error) => {
-        console.error('Error generating image:', error);
-        setGeneratingImg(false);
-      });
+    void generateImage();
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    console.log(form);
 
     if (form.prompt && form.photo) {
       setLoading(true);
